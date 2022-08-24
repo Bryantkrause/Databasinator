@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import os
 import queries
 
+data = []
+
 # get connection data
 load_dotenv('.env')
 DSN =os.environ.get("DSN")
@@ -15,7 +17,19 @@ conn = pyodbc.connect(f'DSN={DSN};UID={UID};PWD={PWD}')
 
 # test connection
 cursor = conn.cursor()
-# print(queries.palletsRec())
+
 cursor.execute(queries.palletsRec())
+
 for i in cursor:
-    print(i)
+    data.append(i)
+
+print(data)
+
+df = pd.DataFrame(data)
+print(df)
+
+writer = pd.ExcelWriter('PalletsRecieved.xlsx', engine='xlsxwriter')
+
+df.to_excel(writer, sheet_name='PalletsRecieved')
+
+writer.save()
