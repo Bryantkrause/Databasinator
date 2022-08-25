@@ -20,3 +20,30 @@ GROUP BY CustomerName ,  TransactionType, FORMAT(EffectiveDate, 'yyyyMM')
 ORDER BY FORMAT(EffectiveDate, 'yyyyMM')
     """
     return storage
+def inboundCharges():
+    inbound = """
+SELECT  DocumentInvoice.ReceiptNumber, 
+WarehouseReceipt.DeliveryDate, WarehouseReceipt.CustomerOrderNumber,WarehouseReceipt.CustomerPONumber, 
+WarehouseReceipt.CarrierName, WarehouseReceipt.TransportMethod, WarehouseReceipt.PalletsReceived, WarehouseReceipt.QtyReceived, WarehouseReceipt.LadingQuantity
+"&InboundLinkList&"
+FROM DocumentInvoice LEFT JOIN  DocumentInvoiceDetail ON DocumentInvoice.DocumentInvoiceNumber = DocumentInvoiceDetail.DocumentInvoiceNumber 
+LEFT JOIN WarehouseReceipt ON DocumentInvoice.ReceiptNumber = WarehouseReceipt.ReceiptNumber AND DocumentInvoice.FacilityName = WarehouseReceipt.FacilityName
+
+WHERE DocumentInvoice.CustomerName = "425" AND DocumentInvoice.InvoiceDate BETWEEN '6/1/2022' AND '6/30/2022' AND DocumentInvoice.FacilityName!='Ztest' AND DocumentInvoice.ReceiptNumber != 0
+GROUP BY DocumentInvoice.CustomerName, DocumentInvoice.FacilityName, DocumentInvoice.ReceiptNumber, DocumentInvoice.InvoiceDate,
+WarehouseReceipt.DeliveryDate, WarehouseReceipt.CustomerOrderNumber,WarehouseReceipt.CustomerPONumber,  WarehouseReceipt.CarrierName, WarehouseReceipt.TransportMethod, WarehouseReceipt.QtyReceived, WarehouseReceipt.LadingQuantity, WarehouseReceipt.PalletsReceived
+
+ORDER BY DocumentInvoice.ReceiptNumber 
+    """
+    return inbound
+
+def inAcc():
+    inAcc = """
+SELECT Accessorial.AccessorialName, Accessorial.AccessorialAlias, Accessorial.Description , AccessorialCriteria.TableName, AccessorialCriteria.FieldName, AccessorialCriteria.FieldValue,
+AccessorialCriteria.ComparisonType, AccessorialCriteria.DataType
+
+FROM Accessorial Inner Join AccessorialCriteria ON Accessorial.AccessorialName = AccessorialCriteria.AccessorialName
+
+WHERE Accessorial.GLCode = 'Inbound Handling' 
+    """
+    return inAcc

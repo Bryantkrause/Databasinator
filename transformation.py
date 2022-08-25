@@ -53,6 +53,16 @@ elif pipeline.query == 'palletsIn':
     writer = pd.ExcelWriter('PalletsIn.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='PalletsRecieved')
     writer.save()
+elif pipeline.query == 'inAcc':
+    print('running inbound accessorial report with criteria')
+    pipeline.cursor.execute(queries.inAcc())
+    for row in pipeline.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('InAcc.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='InAcc')
+    writer.save()
 # if choice is invalid notify user
 else:
     print('that is not an option at this time')
