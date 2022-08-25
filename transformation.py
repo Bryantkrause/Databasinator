@@ -64,5 +64,16 @@ elif pipeline.query == 'inAcc':
     df.to_excel(writer, sheet_name='InAcc')
     writer.save()
 # if choice is invalid notify user
+elif pipeline.query == 'inTar':
+    print('running inbound tariff report with criteria')
+    pipeline.cursor.execute(queries.inTar())
+    for row in pipeline.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('InTar.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='InTar')
+    writer.save()
+# if choice is invalid notify user
 else:
     print('that is not an option at this time')

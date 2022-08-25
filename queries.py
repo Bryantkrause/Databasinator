@@ -47,3 +47,13 @@ FROM Accessorial Inner Join AccessorialCriteria ON Accessorial.AccessorialName =
 WHERE Accessorial.GLCode = 'Inbound Handling' 
     """
     return inAcc
+
+def inTar():
+    inTar = """
+SELECT Tariff.TariffName, Tariff.TariffAlias, Tariff.Description, TariffCriteria.TableName, TariffCriteria.FieldName, TariffCriteria.FieldValue, TariffCriteria.DataType
+
+FROM Tariff Inner Join TariffCriteria on Tariff.TariffName = TariffCriteria.TariffName
+
+WHERE Tariff.GLCode = 'Inbound Handling'
+    """
+    return inTar

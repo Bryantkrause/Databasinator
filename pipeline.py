@@ -20,7 +20,7 @@ cursor = conn.cursor()
 
 # get report name to run
 # query = str(input("Enter Report:"))
-query = 'inAcc'
+query = 'inTar'
 # pass required query
 def runQuery(query):
     print(query)
