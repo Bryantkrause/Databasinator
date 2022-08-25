@@ -86,6 +86,17 @@ elif pipeline.query == 'unloadPal':
     writer = pd.ExcelWriter('unloadPalletized.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='unloadPalletized')
     writer.save()
+#  run unload palletized charges report
+elif pipeline.query == 'lz1000':
+    print('running unloading cartons less than 1000 report')
+    pipeline.cursor.execute(queries.lz1000())
+    for row in pipeline.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('lz1000.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='lz1000')
+    writer.save()
 # if choice is invalid notify user
 else:
     print('that is not an option at this time')

@@ -71,3 +71,15 @@ WHERE  WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !
 WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod = 'Palletized'
     """
     return unloadPallet
+def lz1000():
+    lz1000 = """
+        SELECT WarehouseReceipt.CustomerName,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As UnloadPallets
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND 
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+    WHERE  WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ<1000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized' AND WarehouseReceipt.LadingQuantity < 1000
+    """
+    return lz1000
