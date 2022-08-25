@@ -53,6 +53,7 @@ elif pipeline.query == 'palletsIn':
     writer = pd.ExcelWriter('PalletsIn.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='PalletsRecieved')
     writer.save()
+#  run inbound accesorials 
 elif pipeline.query == 'inAcc':
     print('running inbound accessorial report with criteria')
     pipeline.cursor.execute(queries.inAcc())
@@ -63,7 +64,7 @@ elif pipeline.query == 'inAcc':
     writer = pd.ExcelWriter('InAcc.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='InAcc')
     writer.save()
-# if choice is invalid notify user
+#  run inbound tariffs
 elif pipeline.query == 'inTar':
     print('running inbound tariff report with criteria')
     pipeline.cursor.execute(queries.inTar())
@@ -73,6 +74,17 @@ elif pipeline.query == 'inTar':
     df = pd.DataFrame(palletsInData)
     writer = pd.ExcelWriter('InTar.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='InTar')
+    writer.save()
+#  run unload palletized charges report
+elif pipeline.query == 'unloadPal':
+    print('running unloading palletized with charges')
+    pipeline.cursor.execute(queries.unloadPalletized())
+    for row in pipeline.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('unloadPalletized.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='unloadPalletized')
     writer.save()
 # if choice is invalid notify user
 else:
