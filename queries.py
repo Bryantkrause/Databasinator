@@ -8,6 +8,7 @@ def palletsRec():
     PIVOT ( SUM(PalletsReceived) FOR month IN ([1] , [2] , [3] , [4] , [5] , [6] , [7] , [8] ,[9] , [10] , [11] , [12])) AS thingy ORDER BY ID, year desc"""
     return palletsRecQuery
 
+
 def storageByUnit():
     storage = """
 SELECT 
@@ -20,6 +21,8 @@ GROUP BY CustomerName ,  TransactionType, FORMAT(EffectiveDate, 'yyyyMM')
 ORDER BY FORMAT(EffectiveDate, 'yyyyMM')
     """
     return storage
+
+
 def inboundCharges():
     inbound = """
 SELECT  DocumentInvoice.ReceiptNumber, 
@@ -37,6 +40,7 @@ ORDER BY DocumentInvoice.ReceiptNumber
     """
     return inbound
 
+
 def inAcc():
     inAcc = """
 SELECT Accessorial.AccessorialName, Accessorial.AccessorialAlias, Accessorial.Description , AccessorialCriteria.TableName, AccessorialCriteria.FieldName, AccessorialCriteria.FieldValue,
@@ -48,6 +52,7 @@ WHERE Accessorial.GLCode = 'Inbound Handling'
     """
     return inAcc
 
+
 def inTar():
     inTar = """
 SELECT Tariff.TariffName, Tariff.TariffAlias, Tariff.Description, TariffCriteria.TableName, TariffCriteria.FieldName, TariffCriteria.FieldValue, TariffCriteria.DataType
@@ -57,6 +62,8 @@ FROM Tariff Left Join TariffCriteria on Tariff.TariffName = TariffCriteria.Tarif
 WHERE Tariff.GLCode = 'Inbound Handling'
     """
     return inTar
+
+
 def unloadPalletized():
     unloadPallet = """
 SELECT WarehouseReceipt.CustomerName, WarehouseReceipt.DeliveryDate,
@@ -71,11 +78,13 @@ WHERE  WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !
 WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod = 'Palletized'
     """
     return unloadPallet
+
+
 def lz1000():
     lz1000 = """
-        SELECT WarehouseReceipt.CustomerName,
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
 WarehouseReceipt.ReceiptNumber,
-WarehouseReceipt.TransportMethod,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As UnloadPallets
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND 
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -83,3 +92,74 @@ WarehouseReceipt.FacilityName = CustomerTariff.FacilityName
 WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized' AND WarehouseReceipt.LadingQuantity < 1000
     """
     return lz1000
+
+
+def lz1T2T():
+    lz1T2T = """
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As UnloadPallets
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ 1001-2000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity > 1000 AND WarehouseReceipt.LadingQuantity < 2001
+    """
+    return lz1T2T
+
+
+def lz2T3T():
+    lz2T3T = """
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As UnloadPallets
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ 2001-3000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity > 2000 AND WarehouseReceipt.LadingQuantity < 3001
+    """
+    return lz2T3T
+
+def lz3T():
+    lz3T = """
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ> 3000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity > 3000
+    """
+    return lz3T
+
+def lz1T():
+    lz1T = """
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ > 1000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity > 1000
+    """
+    return lz1T
+def upTo1T():
+    upTo1T = """
+SELECT WarehouseReceipt.CustomerName,WarehouseReceipt.DeliveryDate,
+WarehouseReceipt.ReceiptNumber,
+WarehouseReceipt.TransportMethod,WarehouseReceipt.LadingQuantity,CustomerTariff.Rate,
+(WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='FloorLoad Up to: 1000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity <= 1000
+    """ 
+    return upTo1T

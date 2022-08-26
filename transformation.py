@@ -1,17 +1,17 @@
-import pipeline
+import config
 import queries
 import pandas as pd
 import smtplib
 
 storageData = []
 palletsInData = []
-
-pipeline.runQuery(pipeline.query)
+query = 'upTo1T'
+config.runQuery(query)
 # run storage report
-if pipeline.query == 'storage':
+if query == 'storage':
     print('running storage report')
-    pipeline.cursor.execute(queries.storageByUnit())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.storageByUnit())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         storageData.append(row_to_list)
     df = pd.DataFrame(storageData)
@@ -38,14 +38,14 @@ if pipeline.query == 'storage':
     chart.set_x_axis({'name': 'Date', 'position_axis': 'on_tick'})
     chart.set_y_axis({'name': 'Units', 'major_gridlines': {'visible': False}})
     chart.set_legend({'none': True})
-    worksheet.insert_chart('I2', chart,{'x_scale': 2, 'y_scale': 1})
+    worksheet.insert_chart('I2', chart, {'x_scale': 2, 'y_scale': 1})
     writer.save()
 
 # run pallets recieved report
-elif pipeline.query == 'palletsIn':
+elif query == 'palletsIn':
     print('running pallets recieved report')
-    pipeline.cursor.execute(queries.palletsRec())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.palletsRec())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         palletsInData.append(row_to_list)
     df = pd.DataFrame(palletsInData, columns=['Number', 'Year', 'Jan', 'Feb', 'Mar',
@@ -53,11 +53,11 @@ elif pipeline.query == 'palletsIn':
     writer = pd.ExcelWriter('PalletsIn.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='PalletsRecieved')
     writer.save()
-#  run inbound accesorials 
-elif pipeline.query == 'inAcc':
+#  run inbound accesorials
+elif query == 'inAcc':
     print('running inbound accessorial report with criteria')
-    pipeline.cursor.execute(queries.inAcc())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.inAcc())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         palletsInData.append(row_to_list)
     df = pd.DataFrame(palletsInData)
@@ -65,10 +65,10 @@ elif pipeline.query == 'inAcc':
     df.to_excel(writer, sheet_name='InAcc')
     writer.save()
 #  run inbound tariffs
-elif pipeline.query == 'inTar':
+elif query == 'inTar':
     print('running inbound tariff report with criteria')
-    pipeline.cursor.execute(queries.inTar())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.inTar())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         palletsInData.append(row_to_list)
     df = pd.DataFrame(palletsInData)
@@ -76,10 +76,10 @@ elif pipeline.query == 'inTar':
     df.to_excel(writer, sheet_name='InTar')
     writer.save()
 #  run unload palletized charges report
-elif pipeline.query == 'unloadPal':
+elif query == 'unloadPal':
     print('running unloading palletized with charges')
-    pipeline.cursor.execute(queries.unloadPalletized())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.unloadPalletized())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         palletsInData.append(row_to_list)
     df = pd.DataFrame(palletsInData)
@@ -87,15 +87,70 @@ elif pipeline.query == 'unloadPal':
     df.to_excel(writer, sheet_name='unloadPalletized')
     writer.save()
 #  run unload palletized charges report
-elif pipeline.query == 'lz1000':
+elif query == 'lz1000':
     print('running unloading cartons less than 1000 report')
-    pipeline.cursor.execute(queries.lz1000())
-    for row in pipeline.cursor:
+    config.cursor.execute(queries.lz1000())
+    for row in config.cursor:
         row_to_list = [elem for elem in row]
         palletsInData.append(row_to_list)
     df = pd.DataFrame(palletsInData)
     writer = pd.ExcelWriter('lz1000.xlsx', engine='xlsxwriter')
     df.to_excel(writer, sheet_name='lz1000')
+    writer.save()
+#  run unload cartons between 1001 and 2000
+elif query == 'lz1T2T':
+    print('running unloading cartons great than 1000 but less than 2000 report')
+    config.cursor.execute(queries.lz1T2T())
+    for row in config.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('lz1T2T.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='lz1T2T')
+    writer.save()
+#  run unload cartons between 2001 and 3000
+elif query == 'lz2T3T':
+    print('running unloading cartons great than 2000 but less than 3000 report')
+    config.cursor.execute(queries.lz2T3T())
+    for row in config.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('lz2T3T.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='lz2T3T')
+    writer.save()
+#  run unload cartons greater 3000
+elif query == 'lz3T':
+    print('running unloading cartons greater than 3000 report')
+    config.cursor.execute(queries.lz3T())
+    for row in config.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('lz3T.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='lz3T')
+    writer.save()
+#  run unload cartons greater 1000
+elif query == 'lz1T':
+    print('running unloading cartons greater than 1000 report')
+    config.cursor.execute(queries.lz1T())
+    for row in config.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('lz1T.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='lz1T')
+    writer.save()
+#  run unload cartons up to 1000
+elif query == 'upTo1T':
+    print('running unloading cartons greater than 1000 report')
+    config.cursor.execute(queries.upTo1T())
+    for row in config.cursor:
+        row_to_list = [elem for elem in row]
+        palletsInData.append(row_to_list)
+    df = pd.DataFrame(palletsInData)
+    writer = pd.ExcelWriter('upTo1T.xlsx', engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='upTo1T')
     writer.save()
 # if choice is invalid notify user
 else:
