@@ -1,15 +1,10 @@
 import PySimpleGUI as sg
 import pandas as pd
+import sys
 
 
-df = pd.DataFrame({
-    'date': ['5/1/2017', '5/2/2017', '5/3/2017', '5/1/2017', '5/2/2017', '5/3/2017', '5/1/2017', '5/2/2017', '5/3/2017'],
-    'city': ['ny', 'ny', 'ny', 'muble', 'muble', 'muble', 'bejin', 'bejin', 'bejin', ],
-    'temp': [65, 66, 68, 75, 78, 82, 80, 77, 79],
-    'humidity': [56, 58, 60, 80, 83, 85, 26, 30, 35]
-})
 sg.theme("DarkBlue")
-def table_example():
+def table_example(df):
 
     if not df.empty:
         try:
@@ -33,4 +28,4 @@ def table_example():
     window.close()
 
 
-table_example()
+
