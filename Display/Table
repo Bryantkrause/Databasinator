@@ -5,6 +5,7 @@ import string
 import pandas as pd
 
 
+
 df = pd.DataFrame({
     'date': ['5/1/2017', '5/2/2017', '5/3/2017', '5/1/2017', '5/2/2017', '5/3/2017', '5/1/2017', '5/2/2017', '5/3/2017'],
     'city': ['ny', 'ny', 'ny', 'muble', 'muble', 'muble', 'bejin', 'bejin', 'bejin', ],
@@ -12,7 +13,6 @@ df = pd.DataFrame({
     'humidity': [56, 58, 60, 80, 83, 85, 26, 30, 35]
 })
 
-# ------ Some functions to help generate data for the table ------
 def word():
     return ''.join(random.choice(string.ascii_lowercase) for i in range(10))
 def number(max_val=1000):

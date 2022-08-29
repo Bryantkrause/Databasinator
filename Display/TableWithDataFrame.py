@@ -8,17 +8,13 @@ df = pd.DataFrame({
     'temp': [65, 66, 68, 75, 78, 82, 80, 77, 79],
     'humidity': [56, 58, 60, 80, 83, 85, 26, 30, 35]
 })
-
+sg.theme("DarkBlue")
 def table_example():
 
     if not df.empty:
         try:
-            # Header=None means you directly pass the columns names to the dataframe
-            data = df.values.tolist()               # read everything else into a list of rows
-                                # Press if you named your columns in the csv
-                # Uses the first row (which should be column names) as columns names
+            data = df.values.tolist()               
             header_list = df.columns.tolist()
-                # Drops the first row in the table (otherwise the header names and the first row will be the same)
             data = df[0:].values.tolist()
         except:
             sg.popup_error('Missing Data')
