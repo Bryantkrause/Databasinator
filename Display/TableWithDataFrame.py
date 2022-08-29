@@ -19,8 +19,8 @@ def table_example(df):
         [sg.Table(values=data,
                   headings=header_list,
                   display_row_numbers=True,
-                  auto_size_columns=False,
-                  num_rows=min(25, len(data)))]
+                  auto_size_columns=True,
+                  num_rows=min(30, len(data)))]
     ]
 
     window = sg.Window('Table', layout, grab_anywhere=False)

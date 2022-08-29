@@ -5,7 +5,7 @@ import smtplib
 
 storageData = []
 palletsInData = []
-query = 'upTo1T'
+query = 'storage'
 config.runQuery(query)
 # run storage report
 if query == 'storage':
