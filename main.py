@@ -5,12 +5,12 @@ import pandas as pd
 
 palletsInData = []
 Inboundinator = [queries.unloadPalletized(), queries.upTo1T(), queries.lz1T(), queries.lz3T(), queries.lz2T3T(),
-                 queries.lz1T2T(), queries.lz1000(), queries.M2T(), queries.UnldUnit(), queries.EAAway(), queries.UnldUnitAll(), queries.SrtConfirmM(), queries.SrtConfirm(), queries.SrtConfirm5(), queries.InLabelCase(), queries.palletPutaway()]
+                 queries.lz1T2T(), queries.unload20(), queries.unload40(), queries.unload45(), queries.lz1000(), queries.M2T(), queries.UnldUnit(), queries.EAAway(), queries.UnldUnitAll(), queries.SrtConfirmM(), queries.SrtConfirm(), queries.SrtConfirm5(), queries.InLabelCase(), queries.palletPutaway()]
 
 chargeName = ['unloadpallet', 'upTo1T', 'lz1T']
 allList = []
 data = []
-# df = pd.DataFrame({'Key':})
+
 for query in Inboundinator:
     config.cursor.execute(query)
     for row in config.cursor:
