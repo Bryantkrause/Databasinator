@@ -66,8 +66,8 @@ WHERE Tariff.GLCode = 'Inbound Handling'
 
 def unloadPalletized():
     unloadPallet = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
-Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge 
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+Case When (WarehouseReceipt.PalletsReceived*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.PalletsReceived*CustomerTariff.Rate) end  As CTN_CHarge 
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
 WHERE  WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='UNLD PLTZD' AND
@@ -78,7 +78,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def lz1000():
     lz1000 = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND 
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -90,7 +90,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def lz1T2T():
     lz1T2T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CNT_Charge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -103,7 +103,7 @@ AND WarehouseReceipt.LadingQuantity > 1000 AND WarehouseReceipt.LadingQuantity <
 
 def lz2T3T():
     lz2T3T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As UnloadPallets
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -116,7 +116,7 @@ AND WarehouseReceipt.LadingQuantity > 2000 AND WarehouseReceipt.LadingQuantity <
 
 def lz3T():
     lz3T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -129,20 +129,20 @@ AND WarehouseReceipt.LadingQuantity > 3000
 
 def lz1T():
     lz1T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
 WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='LZ > 1000' AND
 WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
-AND WarehouseReceipt.LadingQuantity < 1000
+AND WarehouseReceipt.LadingQuantity > 1000
     """
     return lz1T
 
 
 def M2T():
     M2T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -152,10 +152,21 @@ AND WarehouseReceipt.LadingQuantity >= 2000
     """
     return M2T
 
+def Between1T2T():
+    Between1T2T = """
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
+FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
+WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
+WHERE WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND CustomerTariff.TariffName='FloorLoad Pieces:1001-2000' AND
+WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:59:59 PM' AND WarehouseReceipt.TransportMethod != 'Palletized'
+AND WarehouseReceipt.LadingQuantity <= 2000 AND WarehouseReceipt.LadingQuantity >= 1000
+    """
+    return Between1T2T
 
 def upTo1T():
     upTo1T = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
 WarehouseReceipt.FacilityName = CustomerTariff.FacilityName 
@@ -168,7 +179,7 @@ AND WarehouseReceipt.LadingQuantity <= 1000
 
 def UnldUnit():
     UnldUnit = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -181,7 +192,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def UnldUnitAll():
     UnldUnitAll = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 Case When (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) < CustomerTariff.MinimumCharge Then CustomerTariff.MinimumCharge else (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) end  As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -194,7 +205,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def EAAway():
     EAAway = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -207,7 +218,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def SrtConfirm():
     SrtConfirm = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -221,7 +232,7 @@ AND WarehouseReceipt.UniqueLotsReceived > 2
 
 def SrtConfirm5():
     SrtConfirm5 = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -235,7 +246,7 @@ AND WarehouseReceipt.UniqueLotsReceived > 4
 
 def SrtConfirmM():
     SrtConfirmM = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -249,7 +260,7 @@ AND WarehouseReceipt.UniqueLotsReceived > 4
 
 def InLabelCase():
     InLabelCase = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.LadingQuantity*CustomerTariff.Rate) As CTN_CHarge
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -262,7 +273,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def palletPutaway():
     palletPutaway = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerTariff.TariffName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerTariff.TariffName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (WarehouseReceipt.PalletsReceived*CustomerTariff.Rate) As PalletPutaway
 FROM WarehouseReceipt LEFT JOIN CustomerTariff ON WarehouseReceipt.CustomerName = CustomerTariff.CustomerName AND
@@ -275,7 +286,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def unload20():
     unload20 = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerAccessorial.AccessorialName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerAccessorial.AccessorialName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (CustomerAccessorial.Rate) As UnloadFlat
 FROM WarehouseReceipt LEFT JOIN CustomerAccessorial ON WarehouseReceipt.CustomerName = CustomerAccessorial.CustomerName AND
@@ -288,7 +299,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def unload40():
     unload40 = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerAccessorial.AccessorialName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber) AS Thingy,CustomerAccessorial.AccessorialName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (CustomerAccessorial.Rate) As UnloadFlat
 FROM WarehouseReceipt LEFT JOIN CustomerAccessorial ON WarehouseReceipt.CustomerName = CustomerAccessorial.CustomerName AND
@@ -301,7 +312,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 
 def unload45():
     unload45 = """
-SELECT Concat(WarehouseReceipt.ReceiptNumber,WarehouseReceipt.FacilityName) AS Thingy,CustomerAccessorial.AccessorialName,
+SELECT Concat(WarehouseReceipt.CustomerName,WarehouseReceipt.FacilityName,WarehouseReceipt.ReceiptNumber)AS Thingy,CustomerAccessorial.AccessorialName,
 Concat(Year(WarehouseReceipt.DeliveryDate),Month(WarehouseReceipt.DeliveryDate)) As Thingy2,
 (CustomerAccessorial.Rate) As UnloadFlat
 FROM WarehouseReceipt LEFT JOIN CustomerAccessorial ON WarehouseReceipt.CustomerName = CustomerAccessorial.CustomerName AND
