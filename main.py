@@ -57,18 +57,10 @@ Summary = pivotar[summaraized]
 Summary = Summary.round(2)
 
 
-# combininator = Summary
-# combininator.index = range(1,len(combininator)+1)
+
 combininator = Summary.groupby(['Date', 'ID', 'Date']).sum()
-# print(Summary.info)
-# print(Summary.dtypes)
-# print(Summary.shape)
-# print(Summary.memory_usage)
-# checker for 0 in unloading
-# pivotar = pivotar.loc[pivotar['Unloading'] == 0]
 
 
-# Table.table_example(Summary)
 writer = pd.ExcelWriter('MonthlySummary.xlsx', engine='xlsxwriter')
 Summary.to_excel(writer, sheet_name='Summary')
 pivotar.to_excel(writer, sheet_name='Raw')
@@ -76,3 +68,10 @@ combininator.to_excel(writer, sheet_name='LessRaw')
 dfChart.to_excel(writer, sheet_name='charty')
 df.to_excel(writer, sheet_name='superRaw')
 writer.save()
+
+
+# checker for 0 in unloading
+# pivotar = pivotar.loc[pivotar['Unloading'] == 0]
+
+
+# Table.table_example(Summary)
