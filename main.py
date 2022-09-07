@@ -21,12 +21,21 @@ for query in Inboundinator:
 
 df = pd.DataFrame(data)
 df.columns = ['ID','Key', 'Charge', 'Date', 'AMT']
+df['AMT'] = pd.to_numeric(df['AMT'],errors='coerce')
 df.set_index('Key')
+
 print(df)
 # pivotar = df.pivot_table(values='AMT',columns='Charge',index=['Date',[df.index.values,'Key']], fill_value=0, sort=True).reset_index('Key')
 pivotar = df.pivot_table(values='AMT', columns='Charge', index=[
                          'Date', 'ID', 'Key'], fill_value=0, sort=True).reset_index()
 print(pivotar.columns)
+
+dfChart = df.pivot_table(values='AMT', columns='Date', index='ID',
+                         fill_value=0, sort=True, aggfunc='sum', margins=True)
+
+
+print(df.dtypes)
+print(dfChart.dtypes)
 
 Unload = ['FloorLoad Up to: 1000', 'FloorLoad Pieces:1001-2000 ',
           'LZ 1001-2000', 'LZ 2001-3000', 'LZ > 1000', 'LZ<1000', 'LZ> 3000',
@@ -64,5 +73,6 @@ writer = pd.ExcelWriter('MonthlySummary.xlsx', engine='xlsxwriter')
 Summary.to_excel(writer, sheet_name='Summary')
 pivotar.to_excel(writer, sheet_name='Raw')
 combininator.to_excel(writer, sheet_name='LessRaw')
+dfChart.to_excel(writer, sheet_name='charty')
 df.to_excel(writer, sheet_name='superRaw')
 writer.save()
