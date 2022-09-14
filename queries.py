@@ -353,3 +353,15 @@ WHERE WarehouseReceipt.DeliveryDate BETWEEN '01/01/2022 00:00:01' AND '07/31/202
 AND WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z_TEST' AND WarehouseReceipt.FacilityName !='Z_TEST' AND WarehouseReceipt.FacilityName !='ZTEST'
     """
     return allInbound
+
+def location():
+    location = """
+SELECT  WarehouseName, FacilityName, SectionName, LocationName, LocationAlias,
+Active, Description, LocationType, Aisle, Level, Length, Width, Height, 
+
+FROM Location
+
+WHERE FacilityName = 'FULLERTON'
+    
+    """
+    return location
