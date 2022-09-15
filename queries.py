@@ -357,7 +357,7 @@ AND WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z
 def location():
     location = """
 SELECT  WarehouseName, FacilityName, SectionName, LocationName, LocationAlias,
-Active, Description, LocationType, Aisle, Level, Length, Width, Height, 
+Active, Description, LocationType, Aisle, Level, Length, Width, Height
 
 FROM Location
 
