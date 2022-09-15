@@ -20,10 +20,13 @@ columnHeaders = [column[0] for column in config.cursor.description]
 
 df = pd.DataFrame(data)
 df.columns = columnHeaders
+
+df['Aisle'].fillna(0, inplace=True)
+
+df['Aisle'] = df['Aisle'].astype(str).astype(int)
+
 location = df
-# print(df.head())
-# print(df.info())
-# print(df.describe())
+
 
 writer = pd.ExcelWriter(file, engine='xlsxwriter')
 location.to_excel(writer, sheet_name='Location')

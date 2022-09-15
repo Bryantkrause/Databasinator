@@ -159,6 +159,7 @@ AND WarehouseReceipt.LadingQuantity >= 2000
     """
     return M2T
 
+
 def Between1T2T():
     Between1T2T = """
 SELECT CASE WHEN WarehouseReceipt.CustomerName >= 430 THEN 430 ELSE WarehouseReceipt.CustomerName END As ID,
@@ -171,6 +172,7 @@ WarehouseReceipt.DeliveryDate BETWEEN '1/1/2022 12:00:00 AM' AND '7/31/2022 11:5
 AND WarehouseReceipt.LadingQuantity <= 2000 AND WarehouseReceipt.LadingQuantity >= 1000
     """
     return Between1T2T
+
 
 def upTo1T():
     upTo1T = """
@@ -354,14 +356,22 @@ AND WarehouseReceipt.CustomerName != 'PC' AND WarehouseReceipt.CustomerName !='Z
     """
     return allInbound
 
+
 def location():
     location = """
-SELECT  WarehouseName, FacilityName, SectionName, LocationName, LocationAlias,
-Active, Description, LocationType, Aisle, Level, Length, Width, Height
-
+SELECT 
+LocationName,Active,LocationType, Aisle, XCoordStart, Level, XCoordEnd
 FROM Location
-
-WHERE FacilityName = 'FULLERTON'
+WHERE FacilityName = 'FULLERTON' and Active = 1
     
     """
     return location
+
+def storageCurrent():
+    storageCurrent = """
+SELECT
+LocationName, PalletId, WarehouseSku, QTY
+FROM Inventory
+WHERE CustomerName = '414'
+    """
+    return storageCurrent
