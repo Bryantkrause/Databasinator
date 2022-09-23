@@ -1,0 +1,8 @@
+Activity reports:
+
+Create inbound Activity
+
+Create outbound Activity
+
+Automatically send
+
