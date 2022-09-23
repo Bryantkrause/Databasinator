@@ -58,6 +58,7 @@ Summary = Summary.round(2)
 
 
 
+
 combininator = Summary.groupby(['Date', 'ID', 'Date']).sum()
 
 
@@ -67,7 +68,7 @@ pivotar.to_excel(writer, sheet_name='Raw')
 combininator.to_excel(writer, sheet_name='LessRaw')
 dfChart.to_excel(writer, sheet_name='charty')
 df.to_excel(writer, sheet_name='superRaw')
-writer.save()
+writer.close()
 
 
 # checker for 0 in unloading
